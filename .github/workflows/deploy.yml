@@ -27,7 +27,7 @@ jobs:
         chmod 600 private_key
         # SSH into the server and run deployment commands
         ssh -o StrictHostKeyChecking=no -p $PORT $USER@$HOST -i private_key <<- EOT
-          cd /root/workspace/language-detection
+          cd /root/Workspace/language-detection
           git pull origin main
           docker stop flask_app || true
           docker rm flask_app || true
