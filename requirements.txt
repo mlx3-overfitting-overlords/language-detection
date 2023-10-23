@@ -1,0 +1,3 @@
+Flask==1.1.2
+torch==2.1.0 # You can specify whichever version you need
+torchvision==0.11.1
