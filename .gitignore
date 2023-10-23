@@ -3,6 +3,8 @@ __pycache__/
 *.py[cod]
 *$py.class
 
+# sshkeys
+.ssh
 # C extensions
 *.so
 
