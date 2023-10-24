@@ -20,6 +20,8 @@ jobs:
         USER: root
         PORT: 22
       run: |
+        # Exit immediately if a command exits with a non-zero status.
+        set -e
         # Install SSH client
         sudo apt-get install -y openssh-client
         # Write SSH key for GitHub Actions
@@ -27,6 +29,7 @@ jobs:
         chmod 600 private_key
         # SSH into the server and run deployment commands
         ssh -o StrictHostKeyChecking=no -p $PORT $USER@$HOST -i private_key <<- EOT
+          set -e  # This is also important to set inside the SSH command.
           cd /root/Workspace/language-detection
           git pull origin main
           docker stop flask_app || true
