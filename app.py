@@ -7,7 +7,7 @@ app = Flask(__name__)
 def hello():
     return f'Hello from Flask with PyTorch {torch.__version__}!'
 
-@app.route('/what_language_is_this')
+@app.route('/what_language_is_this',methods=['GET','POST'])
 def what_language():
     predictions = [
         { 'class': 'German', 'value': 0.10 },
