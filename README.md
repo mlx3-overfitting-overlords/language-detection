@@ -4,6 +4,12 @@ A language detection model.
 
 ## Getting started
 
+Download datasets by running:
+```sh
+./scripts/fetch_datasets.sh
+```
+
+
 Ensure you have Docker installed, then to build the container, run:
 
 ```bash
