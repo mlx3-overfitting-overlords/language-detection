@@ -7,8 +7,9 @@ app = Flask(__name__)
 def hello():
     return f'Hello from Flask with PyTorch {torch.__version__}!'
 
-@app.route('/what_language_is_this',methods=['GET','POST'])
+@app.route('/what_language_is_this',methods=['POST'])
 def what_language():
+    # You can now work with the data
     predictions = [
         { 'class': 'German', 'value': 0.10 },
         { 'class': 'Esperanto', 'value': 0.10 },
@@ -19,6 +20,7 @@ def what_language():
         { 'class': 'English', 'value': 0.10 }]
 
     return jsonify(predictions)
+
 if __name__ == '__main__':
 
     app.run(host='0.0.0.0', port=3031)
