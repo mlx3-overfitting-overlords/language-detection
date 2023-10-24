@@ -13,6 +13,7 @@ RUN pip install --trusted-host pypi.python.org -r requirements.txt
 
 COPY app.py /app
 
+RUN pip install requests && pip freeze > requirements.txt
 # Make port 3031 available to the world outside this container
 EXPOSE 3031
 

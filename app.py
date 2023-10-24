@@ -19,6 +19,6 @@ def what_language():
         { 'class': 'English', 'value': 0.10 }]
 
     return jsonify(predictions)
-
 if __name__ == '__main__':
+
     app.run(host='0.0.0.0', port=3031)
