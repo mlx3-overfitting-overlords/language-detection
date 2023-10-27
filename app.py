@@ -17,7 +17,7 @@ def startup_event():
     maybe_model = "Attach my model to some variables"
     tknz = (tokenizer.Tokenizer()).load_vocab("./vocab.txt")
     lang = model.Language(torch.rand(len(tknz.vocab), 50), 7)
-    lang.load_state_dict(torch.load("./weights/lang_epoch_1.pt"))
+    lang.load_state_dict(torch.load("./weights/lang_epoch_3.pt"))
     lang.eval()
 
 @app.route("/")
