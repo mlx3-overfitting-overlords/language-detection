@@ -42,7 +42,7 @@ loss_function = torch.nn.CrossEntropyLoss()
 optimizer = torch.optim.SGD(lang.parameters(), lr=0.001)
 torch.save(lang.state_dict(), f"./weights_old/lang_epoch_0.pt")
 
-total_epochs = 3
+total_epochs = 10
 for epoch in range(total_epochs):
   for sentence, target, _ in dl:
     optimizer.zero_grad()
