@@ -9,7 +9,7 @@ app = Flask(__name__)
 maybe_model = None
 tknz = None
 lang = None
-langs = ["German", "Esperanto", "French", "Italian", "Spanish", "Turkish", "English"]
+langs = ["German", "Espanol", "French", "Italian", "Spanish", "Turkish", "English"]
 
 @app.before_first_request
 def startup_event():
