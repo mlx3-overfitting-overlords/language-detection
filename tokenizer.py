@@ -1,6 +1,9 @@
 import string
 import pandas
 
+def generate_char_ngrams(text, n=3):
+    ngrams = [text[i:i + n] for i in range(len(text) - n + 1)]
+    return ngrams
 
 class Tokenizer:
   def __init__(self, corpus=None, freq_threshold=1):
@@ -11,21 +14,31 @@ class Tokenizer:
     self.word2idx = {word: idx for idx, word in enumerate(self.vocab)}
     self.idx2word = {idx: word for idx, word in enumerate(self.vocab)}
 
+  def generate_char_ngrams(text, n=3):
+      return [text[i:i + n] for i in range(len(text) - n + 1)]
+
   def build_freq_dist(self):
-    freq_dist = {}
-    for sentence in self.corpus:
-      for word in sentence.split():
-        word = self.clean_word(word)
-        # Check if the word is not empty after cleaning
-        if word: freq_dist[word] = freq_dist.get(word, 0) + 1
-    return freq_dist
-
+      freq_dist = {}
+      for sentence in self.corpus:
+          for word in sentence.split():
+              word = self.clean_word(word)
+              # Create ngrams for each word and update their frequencies
+              for ngram in generate_char_ngrams(word):
+                  freq_dist[ngram] = freq_dist.get(ngram, 0) + 1
+      return freq_dist
+  
   def build_vocab(self):
-    tokens = [word.lower() for sentence in self.corpus for word in sentence.split()]
-    tokens = [self.clean_word(word) for word in tokens if word]  # Clean and filter out empty words
-    vocab = list({word for word in tokens if self.freq_dist.get(word, 0) > self.freq_threshold})
-    return vocab
+      tokens = [word.lower() for sentence in self.corpus for word in sentence.split()]
+      tokens = [self.clean_word(word) for word in tokens if word]  # Clean and filter out empty words
+      
+      ngrams = []
+      for token in tokens:
+          ngrams.extend(generate_char_ngrams(token))  # Generating 3-character ngrams
 
+      # Only keep ngrams that appear more than the threshold times
+      vocab = list({ng for ng in ngrams if self.freq_dist.get(ng, 0) > self.freq_threshold})
+      return vocab
+  
   def save_vocab(self, path):
     with open(path, 'w') as f:
       for word in self.vocab: f.write(word + '\n')
@@ -38,12 +51,13 @@ class Tokenizer:
     return self
 
   def encode(self, sentence):
-    words = sentence.split()
-    words = [self.clean_word(word) for word in words if word]  # Clean and filter out empty words
-    return [self.word2idx[word] for word in words if word in self.word2idx]
+      cleaned_sentence = self.clean_word(sentence)  # We'll clean the whole sentence
+      ngrams = generate_char_ngrams(cleaned_sentence)
+      return [self.word2idx[ngram] for ngram in ngrams if ngram in self.word2idx]
 
   def decode(self, indices):
-    return ' '.join(self.idx2word[idx] for idx in indices if idx in self.idx2word)
+      return ''.join(self.idx2word[idx] for idx in indices if idx in self.idx2word)
+
 
   @staticmethod
   def clean_word(word):
@@ -54,9 +68,6 @@ class Tokenizer:
 
 
 if __name__ == '__main__':
-  import pandas as pd
-  
- 
   def get_sentences(lang, column=None):
       if column is None:  # set default value for column
           column = lang
