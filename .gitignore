@@ -167,3 +167,4 @@ cython_debug/
 
 # Datasets
 datasets
+weights_old
