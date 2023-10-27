@@ -11,7 +11,7 @@ COPY requirements.txt /app
 # Install any needed packages specified in requirements.txt
 RUN pip install --trusted-host pypi.python.org -r requirements.txt
 
-COPY app.py /app
+COPY . /app
 
 RUN pip install requests && pip freeze > requirements.txt
 # Make port 3031 available to the world outside this container
@@ -19,7 +19,6 @@ EXPOSE 3031
 
 # Define environment variable
 ENV NAME World
-ENV PYTHONPATH /app:$PYTHONPATH
 
 # Run app.py when the container launches
 CMD ["python", "app.py"]
