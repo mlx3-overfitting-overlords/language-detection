@@ -1,4 +1,5 @@
 import string
+import pandas
 
 
 class Tokenizer:
@@ -54,9 +55,35 @@ class Tokenizer:
 
 if __name__ == '__main__':
   import pandas as pd
-  data = pd.read_parquet('./Flores7Lang.parquet')
+  
+ 
+  def get_sentences(lang, column=None):
+      if column is None:  # set default value for column
+          column = lang
+      
+      dataset_path = f'./datasets/CL_{lang}-en.parquet'
+      df = pandas.read_parquet(dataset_path).sample(n=10000,random_state=42)
+      
+      # Preprocess the text
+      sentences = df[column].tolist()
+
+      return sentences
+
+
+  sentences_fr = get_sentences('fr')
+  sentences_en = get_sentences('fr','en')
+  sentences_es = get_sentences('es')
+  sentences_de = get_sentences('de')
+  sentences_it = get_sentences('it')
+
+  # print(sentences_en[:10])
+
+
+  data = pandas.read_parquet('./datasets/Flores7Lang.parquet')
+
   long_format = data.melt(value_vars=data.columns)
-  corpus = long_format['value'].tolist()
+  corpus =  sentences_en +  sentences_fr +  sentences_es +  sentences_de +  sentences_it + long_format['value'].tolist()
+
   tknz = Tokenizer(corpus)
   tknz.save_vocab('./vocab.txt')
   tknz.load_vocab('./vocab.txt')
