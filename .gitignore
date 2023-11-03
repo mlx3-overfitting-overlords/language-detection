@@ -167,4 +167,8 @@ cython_debug/
 
 # Datasets
 datasets
+data
 weights_old
+weights
+wandb
+corpus.txt
