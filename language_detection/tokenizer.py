@@ -14,8 +14,8 @@ class Tokenizer:
     self.word2idx = {word: idx for idx, word in enumerate(self.vocab)}
     self.idx2word = {idx: word for idx, word in enumerate(self.vocab)}
 
-  def generate_char_ngrams(text, n):
-      return generate_char_ngrams(text, n)
+  def generate_char_ngrams(text, n=3):
+      return [text[i:i + n] for i in range(len(text) - n + 1)]
 
   def build_freq_dist(self):
       freq_dist = {}
@@ -28,12 +28,12 @@ class Tokenizer:
       return freq_dist
   
   def build_vocab(self):
-      words = [word.lower() for sentence in self.corpus for word in sentence.split()]
-      words = [self.clean_word(word) for word in words if word]  # Clean and filter out empty words
+      tokens = [word.lower() for sentence in self.corpus for word in sentence.split()]
+      tokens = [self.clean_word(word) for word in tokens if word]  # Clean and filter out empty words
       
       ngrams = []
-      for word in words:
-          ngrams.extend(generate_char_ngrams(word))  # Generating 3-character ngrams
+      for token in tokens:
+          ngrams.extend(generate_char_ngrams(token))  # Generating 3-character ngrams
 
       # Only keep ngrams that appear more than the threshold times
       vocab = list({ng for ng in ngrams if self.freq_dist.get(ng, 0) > self.freq_threshold})
@@ -62,7 +62,8 @@ class Tokenizer:
   @staticmethod
   def clean_word(word):
     word = word.lower()
-    word = ''.join(char for char in word if char.isalpha() or char.isspace())  # Keep alphabetic characters and spaces
+    word = ''.join(char for char in word if char not in string.punctuation)
+    word = ''.join(char for char in word if not char.isdigit())
     return word.strip()
 
 
