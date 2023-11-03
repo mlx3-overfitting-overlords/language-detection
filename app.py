@@ -103,7 +103,7 @@ def search_index(query, k=10):
 
     return distances[0], retrieved_passages, retrieved_urls
 
-@app.route("/search", methods=['POST'])
+@app.route("/learn_to_search", methods=['POST'])
 def search():
     # Extract the query from the POST request
     query = request.json.get('query', '')
